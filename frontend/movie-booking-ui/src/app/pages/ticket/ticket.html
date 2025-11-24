@@ -1,0 +1,59 @@
+<div class="ticket-screen" *ngIf="!loading && booking && movie && showtime; else loadingTpl">
+  <header class="top-bar">
+    <button class="circle-btn" (click)="goBack()">←</button>
+    <h1>Mobile Ticket</h1>
+    <button class="circle-btn">⋮</button>
+  </header>
+
+  <p class="intro">
+    Once you buy a movie ticket, simply scan the barcode to watch your movie.
+  </p>
+
+  <div class="ticket-card">
+    <div
+      class="ticket-poster"
+      [style.backgroundImage]="'url(' + movie.posterUrl + ')'"
+    ></div>
+
+    <div class="ticket-info">
+      <div class="row">
+        <span>Date:</span>
+        <span>{{ showtime.startTime | date : 'MMM d, y' }}</span>
+      </div>
+      <div class="row">
+        <span>Time:</span>
+        <span>{{ showtime.startTime | date : 'h:mm a' }}</span>
+      </div>
+      <div class="row">
+        <span>Seats:</span>
+        <span>{{ seatsString }}</span>
+      </div>
+      <div class="row">
+        <span>Total:</span>
+        <span>${{ booking.totalPrice }}</span>
+      </div>
+
+      <div class="barcode">
+        <div
+          class="bar"
+          *ngFor="let _ of bars; let idx = index"
+          [style.height]="idx % 3 === 0 ? '100%' : '70%'"
+        ></div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <button class="nav-btn active">🏠</button>
+    <button class="nav-btn">📍</button>
+    <button class="nav-btn center">⬜⬜</button>
+    <button class="nav-btn">🎟️</button>
+    <button class="nav-btn">👤</button>
+  </nav>
+</div>
+
+<ng-template #loadingTpl>
+  <div class="loading">Loading ticket…</div>
+</ng-template>
+
+<div *ngIf="error" class="error">{{ error }}</div>

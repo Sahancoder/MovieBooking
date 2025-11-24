@@ -1,0 +1,71 @@
+<div class="seats-screen" *ngIf="!loading; else loadingTpl">
+  <header class="top-bar">
+    <button class="circle-btn" (click)="goBack()">←</button>
+    <h1>Choose your seats</h1>
+    <button class="circle-btn">📅</button>
+  </header>
+
+  <div class="screen-arc"></div>
+
+  <div class="seat-grid">
+    <div class="seat-row" *ngFor="let row of seatRows">
+      <button
+        *ngFor="let seat of row"
+        class="seat"
+        [class.available]="seat.status === 'available'"
+        [class.reserved]="seat.status === 'reserved'"
+        [class.selected]="seat.status === 'selected'"
+        (click)="toggleSeat(seat)"
+      ></button>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item">
+      <span class="dot available"></span>
+      <span>Available</span>
+    </div>
+    <div class="legend-item">
+      <span class="dot reserved"></span>
+      <span>Reserved</span>
+    </div>
+    <div class="legend-item">
+      <span class="dot selected"></span>
+      <span>Selected</span>
+    </div>
+  </div>
+
+  <section class="bottom-card">
+    <div class="details" *ngIf="showtime">
+      <div class="line">
+        <span class="icon">📅</span>
+        <span>
+          {{ showtime.startTime | date : 'MMM d, y' }} •
+          {{ showtime.startTime | date : 'h:mm a' }}
+        </span>
+      </div>
+      <div class="line">
+        <span class="icon">🎟️</span>
+        <span>Seats: {{ selectedSeatsString }}</span>
+      </div>
+      <div class="line">
+        <span class="icon">💵</span>
+        <span>Total: ${{ totalPrice }}</span>
+      </div>
+    </div>
+
+    <button
+      class="buy-btn"
+      [class.disabled]="selectedSeats.length === 0"
+      (click)="buy()"
+    >
+      Buy
+    </button>
+  </section>
+</div>
+
+<ng-template #loadingTpl>
+  <div class="loading">Loading seats…</div>
+</ng-template>
+
+<div *ngIf="error" class="error">{{ error }}</div>

@@ -1,0 +1,48 @@
+<div *ngIf="!loading && movie; else loadingTpl">
+  <div class="hero">
+    <button class="icon-btn left" (click)="goBack()">←</button>
+    <button class="icon-btn right">⋮</button>
+
+    <div
+      class="hero-img"
+      [style.backgroundImage]="'url(' + movie!.posterUrl + ')'"
+    ></div>
+    <div class="hero-gradient"></div>
+
+    <div class="hero-text">
+      <h1>{{ movie!.title }}</h1>
+      <h2>{{ movie!.subtitle }}</h2>
+      <p>{{ movie!.description }}</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <h3>Select Date and Time</h3>
+
+    <div class="dates">
+      <button
+        *ngFor="let s of showtimes"
+        class="date-pill"
+        [class.active]="s === selectedShowtime"
+        (click)="selectShowtime(s)"
+      >
+        <span class="day">{{ s.startTime | date : 'EEE d' }}</span>
+        <span class="time">{{ s.startTime | date : 'HH:mm' }}</span>
+      </button>
+    </div>
+
+    <button
+      class="primary-btn"
+      (click)="goToSeats()"
+      [disabled]="!selectedShowtime"
+    >
+      Reservation
+    </button>
+  </section>
+</div>
+
+<ng-template #loadingTpl>
+  <div class="loading">Loading movie…</div>
+</ng-template>
+
+<div class="error" *ngIf="error">{{ error }}</div>
